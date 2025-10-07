@@ -13,7 +13,7 @@
     <center>
       <div id="game-container">
         <h1>{{title}}</h1>
-        <canvas id="loadingCanvas" oncontextmenu="event.preventDefault()" width="800" height="600"></canvas>
+        <canvas id="loadingCanvas" oncontextmenu="event.preventDefault()"></canvas>
         <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
       </div>
     </center>
@@ -66,15 +66,31 @@
         // On mobile, use CSS fullscreen as it's more reliable
         if(isMobile) {
           var canvas = document.getElementById("canvas");
+          var footer = document.querySelector("footer");
+          var header = document.querySelector("h1");
+          var center = document.querySelector("center");
+          var body = document.body;
+
           if(canvas.style.position !== 'fixed') {
+            // Set canvas buffer size to match viewport
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
             canvas.style.position = 'fixed';
             canvas.style.top = '0';
             canvas.style.left = '0';
             canvas.style.width = '100vw';
             canvas.style.height = '100vh';
+            canvas.style.maxWidth = 'none';
+            canvas.style.maxHeight = 'none';
             canvas.style.zIndex = '9999';
-            canvas.style.backgroundColor = '#000';
-            document.body.style.overflow = 'hidden';
+            body.style.overflow = 'hidden';
+            body.style.margin = '0';
+            body.style.padding = '0';
+            body.style.backgroundColor = '#000';
+            if(footer) footer.style.visibility = 'hidden';
+            if(header) header.style.visibility = 'hidden';
+            if(center) center.style.backgroundColor = '#000';
             // Trigger resize to update canvas dimensions
             setTimeout(resizeCanvas, 100);
           } else {
@@ -83,9 +99,16 @@
             canvas.style.left = '';
             canvas.style.width = '';
             canvas.style.height = '';
+            canvas.style.maxWidth = '';
+            canvas.style.maxHeight = '';
             canvas.style.zIndex = '';
-            canvas.style.backgroundColor = '';
-            document.body.style.overflow = '';
+            body.style.overflow = '';
+            body.style.margin = '';
+            body.style.padding = '';
+            body.style.backgroundColor = '';
+            if(footer) footer.style.visibility = '';
+            if(header) header.style.visibility = '';
+            if(center) center.style.backgroundColor = '';
             setTimeout(resizeCanvas, 100);
           }
         } else {
@@ -115,16 +138,25 @@
       function drawLoadingText(text) {
         var canvas = loadingContext.canvas;
 
-        loadingContext.fillStyle = "rgb(142, 195, 227)";
-        loadingContext.fillRect(0, 0, canvas.scrollWidth, canvas.scrollHeight);
+        // Set canvas size to match container (responsive)
+        var container = document.getElementById('game-container');
+        var containerWidth = container.clientWidth || 800;
+        var containerHeight = Math.min(window.innerHeight - 120, containerWidth * 0.75) || 600;
 
-        loadingContext.font = '2em arial';
+        canvas.width = containerWidth;
+        canvas.height = containerHeight;
+
+        loadingContext.fillStyle = "rgb(142, 195, 227)";
+        loadingContext.fillRect(0, 0, canvas.width, canvas.height);
+
+        var fontSize = Math.min(containerWidth / 20, 32);
+        loadingContext.font = fontSize + 'px arial';
         loadingContext.textAlign = 'center'
         loadingContext.fillStyle = "rgb( 11, 86, 117 )";
-        loadingContext.fillText(text, canvas.scrollWidth / 2, canvas.scrollHeight / 2);
+        loadingContext.fillText(text, canvas.width / 2, canvas.height / 2);
 
-        loadingContext.fillText("Powered By Emscripten.", canvas.scrollWidth / 2, canvas.scrollHeight / 4);
-        loadingContext.fillText("Powered By LÖVE.", canvas.scrollWidth / 2, canvas.scrollHeight / 4 * 3);
+        loadingContext.fillText("Powered By Emscripten.", canvas.width / 2, canvas.height / 4);
+        loadingContext.fillText("Powered By LÖVE.", canvas.width / 2, canvas.height / 4 * 3);
       }
 
       window.onload = function () { window.focus(); };
