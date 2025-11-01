@@ -172,6 +172,10 @@ getAdditionalInfo(commander).then((args) => {
     server.listen(port, () => {
       console.log('Serving '+args.output+' on http://localhost:'+port);
     });
+    process.on('SIGINT', () => {
+      console.log('\nShutting down server...');
+      process.exit(0);
+    });
   }
 }).catch((e) => {
   console.error(e.message); // eslint-disable-line no-console
