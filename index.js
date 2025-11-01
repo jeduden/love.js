@@ -9,6 +9,7 @@ const uuid = require('uuid');
 
 commander
   .version(packageJson.version)
+  .option('-s, --serve', 'serves the output directory after building')
   .option('-t, --title <string>', 'specify game name')
   .option('-m, --memory [bytes]', 'how much memory your game will require [16777216]', 16777216)
   .option('-c, --compatibility', 'specify flag to use compatibility version')
@@ -42,6 +43,7 @@ const getAdditionalInfo = async function getAdditionalInfo(parsedArgs) {
     input: parsedArgs.input,
     output: parsedArgs.output,
     compat: parsedArgs.compatibility,
+    serve: parsedArgs.serve
   };
   args.input = parsedArgs.input || await prompt('Love file or directory: ');
   args.output = parsedArgs.output || await prompt('Output directory: ');
@@ -142,6 +144,34 @@ getAdditionalInfo(commander).then((args) => {
     if (fldr_name === "release") {
       fs.copySync(`${srcDir}/${fldr_name}/love.worker.js`, `${outputDir}/love.worker.js`);
     }
+  }
+
+  if(args.serve) {
+    const handler = require('serve-handler');
+    const http = require('http');
+    const port = 8000
+    
+    const server = http.createServer((request, response) => {
+      return handler(request, response, {
+        public: args.output,
+        headers: [
+          {
+            source: '**',
+            headers: [{
+              key: 'Cross-Origin-Opener-Policy',
+              value: 'same-origin'
+            }, {
+              key: 'Cross-Origin-Embedder-Policy',
+              value: 'require-corp'
+            }]
+          }
+       ]
+      });
+    });
+    
+    server.listen(port, () => {
+      console.log('Serving '+args.output+' on http://localhost:'+port);
+    });
   }
 }).catch((e) => {
   console.error(e.message); // eslint-disable-line no-console

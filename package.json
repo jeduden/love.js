@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/Davidobot/love.js#readme",
   "devDependencies": {
-    "eslint": "^3.19.0",
+    "eslint": "^9.39.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
@@ -39,6 +39,7 @@
     "fs-extra": "^3.0.1",
     "klaw-sync": "^2.1.0",
     "mustache": "^2.3.0",
+    "serve": "^14.2.5",
     "uuid": "^3.0.1"
   }
 }
