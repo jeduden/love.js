@@ -1,6 +1,6 @@
 {
-  "name": "love.js",
-  "version": "11.4.1",
+  "name": "@jeduden-love2d/love.js",
+  "version": "11.5.0.1",
   "description": "Tooling to support the Emscripten port of LÖVE.",
   "engines": {
     "node": ">=7.10.0",
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Davidobot/love.js.git"
+    "url": "git+https://github.com/jeduden/love.js.git"
   },
   "author": "Tanner Rogalsky <tanner@tannerrogalsky.com>",
   "license": "MIT",
