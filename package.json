@@ -1,6 +1,6 @@
 {
   "name": "@jeduden-love2d/love.js",
-  "version": "11.5.0.1",
+  "version": "11.5.1",
   "description": "Tooling to support the Emscripten port of LÖVE.",
   "engines": {
     "node": ">=7.10.0",
